@@ -14,5 +14,3 @@ docker run \
     -v /xavier_ssd/docker_testing/$REPO_NAME/:/ws/src/$REPO_NAME/ \
     --name $REPO_NAME \
     $IMAGE_NAME:$IMAGE_TAG
-
-        # -v /xavier_ssd/docker_testing/$REPO_NAME/dragandbot_common/:/ws/src/dragandbot_common/ \
