@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+
+    <!-- Input parameters to activate/deactivate sensors -->
+    <arg name="lidar"             default="false"/>
+    <arg name="zed"             default="false"/>
+    <arg name="basler_left"        default="true"/>
+    <arg name="basler_right"       default="true"/>
+    <arg name="sbg"             default="false"/>
+
+    <!-- Ouster OS1 Lidar Launch -->
+    <group if="$(eval arg('lidar') == 'true')">
+        <node pkg="tf" type="static_transform_publisher" name="os_sensor_broadcaster" args="0 0 0 0 0 0 1 base_link os_sensor 100" />
+        <include name="$(find ouster_ros)/ouster.launch" >
+            <arg name="sensor_hostname" value="os1-992005000477.local" doc="hostname or IP in dotted decimal form of the sensor"/>
+            <arg name="udp_dest" value="169.254.231.197" doc="hostname or IP where the sensor will send data packets"/>
+            <arg name="lidar_mode" value="2048x10" doc="resolution and rate: either 512x10, 512x20, 1024x10, 1024x20, or 2048x10"/>
+            <arg name="timestamp_mode" value="TIME_FROM_PTP_1588" doc="method used to timestamp measurements: TIME_FROM_INTERNAL_OSC, TIME_FROM_SYNC_PULSE_IN, TIME_FROM_PTP_1588"/>
+        </include>
+    </group>
+
+    <!-- Basler Ace2 Left Camera Launch -->
+    <!-- <group if="$(eval arg("basler_left") == "true")"> -->
+    <node pkg="tf" type="static_transform_publisher" name="pylon_camera_left_broadcaster" args="0.1 0.4 -0.05 0.5 -0.5 0.5 -0.5 base_link pylon_camera_left 100" />
+        <include file="$(find pylon_camera)/launch/pylon_camera_node.launch" >
+            <arg name="node_name" value="pylon_camera_node_left" />
+            <arg name="config_file" value="$(find pylon_camera)/config/default_left.yaml" />
+        </include>
+    <!-- </group> -->
+
+    <!-- Basler Ace2 Left Camera Launch -->
+    <!-- <group if="$(eval arg('basler_right') == 'true')"> -->
+        <node pkg="tf" type="static_transform_publisher" name="pylon_camera_right_broadcaster" args="0.1 -0.4 -0.05 0.5 -0.5 0.5 -0.5 base_link pylon_camera_right 100" />
+        <include file="$(find pylon_camera)/launch/pylon_camera_node.launch" >
+            <arg name="node_name" value="pylon_camera_node_right" />
+            <arg name="config_file" value="$(find pylon_camera)/config/default_right.yaml" />
+        </include>
+    <!-- </group> -->
+
+    <!-- Stereolabs ZED Camera Launch -->
+    <group if="$(eval arg('zed') == 'true')">
+        <include file="$(find zed_wrapper)/launch/zed.launch"/>
+    </group>
+
+    <!-- SBG-Systems Ellipse-D GNSS -->
+    <group if="$(eval arg('sbg') == 'true')">
+        <node name="sbg_ellipseD" pkg="sbg_driver" type="sbg_device" output="screen">
+            <rosparam command="load" file="$(find sbg_driver)/config/example/ellipse_D_default.yaml" />
+        </node>
+    </group>
+
+</launch>
