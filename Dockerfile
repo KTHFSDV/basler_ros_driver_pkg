@@ -21,6 +21,11 @@ RUN apt-get install -y \
         python3-catkin-tools \
         usbutils \
         wget \
+        ros-noetic-camera-info-manager \
+        ros-noetic-diagnostic-updater \
+        ros-noetic-image-geometry \
+        ros-noetic-roslint \
+        ros-noetic-cv-bridge \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

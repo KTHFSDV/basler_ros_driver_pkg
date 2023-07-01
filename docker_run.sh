@@ -8,13 +8,11 @@ IMAGE_TAG="latest"
 
 # Build the Docker image
 docker run \
-    --gpus all \
-    --runtime=nvidia \
     -it \
     --network=host \
     --privileged \
     -v /xavier_ssd/docker_testing/$REPO_NAME/:/ws/src/$REPO_NAME/ \
-    -v /xavier_ssd/docker_testing/$REPO_NAME/fs_msgs/:/ws/src/fs_msgs/ \
-    -v /xavier_ssd/docker_testing/$REPO_NAME/fs_common/:/ws/src/fs_common \
-    -n $REPO_NAME
+    --name $REPO_NAME \
     $IMAGE_NAME:$IMAGE_TAG
+
+        # -v /xavier_ssd/docker_testing/$REPO_NAME/dragandbot_common/:/ws/src/dragandbot_common/ \

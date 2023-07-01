@@ -15,7 +15,7 @@ services:
       # - ROS_MASTER_URI=http://master:11311 
     volumes:
       - ./:/ws/src/basler_ros_driver_pkg       # <-- YOUR TODO: change to name of your repository
-      - ./dragandbot_common:/ws/src/dragandbot_common
+      # - ./dragandbot_common:/ws/src/dragandbot_common
     privileged: true
     entrypoint: chmod +x /ws/src/basler_ros_driver_pkg/docker-entrypoint.sh && /ws/src/basler_ros_driver_pkg/docker-entrypoint.sh  # <-- YOUR TODO: change to name of your repository
     command: sh -c "while true; do sleep 1; done"    
